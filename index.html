@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Zipote Food — Menú y pedidos</title>
+<meta name="description" content="Menú digital de Zipote Food. Arma tu pedido y envíalo por WhatsApp.">
+<meta name="theme-color" content="#1A0D0B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bienv" id="bienv" role="dialog" aria-modal="true" aria-label="Bienvenida">
+  <div class="bienv-card">
+    <img class="logo" src="assets/logo.webp" alt="Zipote Food">
+    <h2>Bienvenido a Zipote Food</h2>
+    <p>Arma tu pedido y envíalo directo a nuestro WhatsApp.</p>
+    <button class="btn rojo grande" id="entrar" type="button">Ver menú</button>
+  </div>
+</div>
+
+<img class="portada" id="portada" alt="" hidden>
+<header class="hero">
+  <img class="logo" src="assets/logo.webp" alt="Zipote Food">
+  <h1 id="inicioMenu" tabindex="-1">Zipote Food</h1>
+  <p id="direccion"></p>
+  <p id="horarioTxt"></p>
+  <span class="estado" id="estado"><i></i><span>Cargando horario…</span></span>
+  <div class="acciones">
+    <a class="btn verde" id="lnkWa" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.3 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.2.1.6-.1 1.2Z"/></svg>
+      WhatsApp</a>
+    <a class="btn" id="lnkIg" target="_blank" rel="noopener">Instagram</a>
+    <a class="btn" id="lnkMaps" target="_blank" rel="noopener">Cómo llegar</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="barra">
+    <input class="buscar" id="buscar" type="search" placeholder="Busca un plato, ej: salchipapa" aria-label="Buscar en el menú">
+    <nav class="chips" id="chips" aria-label="Categorías"></nav>
+  </div>
+
+  <div id="menu"></div>
+  <p class="vacio" role="status" id="vacio">No encontramos ese plato. Prueba con otra palabra.</p>
+</main>
+
+<footer>Zipote Food · Barranquilla</footer>
+
+<button class="fab" id="fab"><span><span class="n" id="fabN">0</span> Ver pedido</span><span id="fabT">$0</span></button>
+
+<div class="velo" id="velo"></div>
+
+<!-- Panel producto -->
+<section class="panel" inert id="pProd" role="dialog" aria-modal="true" aria-labelledby="ppNombre">
+  <div class="cab"><h3 id="ppNombre"></h3><button class="x" data-cerrar aria-label="Cerrar">×</button></div>
+  <div class="cuerpo">
+    <div class="big" id="ppEmoji"></div>
+    <p class="desc" id="ppDesc"></p>
+    <div id="ppTamanos"></div>
+    <label class="lbl" for="ppNota">¿Alguna indicación?</label>
+    <textarea id="ppNota" rows="2" maxlength="300" placeholder="Ej: sin cebolla, salsas aparte"></textarea>
+    <p class="err" id="ppError" role="alert" hidden></p>
+  </div>
+  <div class="pie fila">
+    <div class="cant"><button id="ppMenos" aria-label="Quitar uno">−</button><b id="ppCant">1</b><button id="ppMas" aria-label="Agregar uno">+</button></div>
+    <button class="btn rojo" id="ppAgregar">Agregar</button>
+  </div>
+</section>
+
+<!-- Panel carrito -->
+<form class="panel" inert id="pCarro" role="dialog" aria-modal="true" aria-labelledby="pcTit" novalidate>
+  <div class="cab"><h3 id="pcTit">Tu pedido</h3><button type="button" class="x" data-cerrar aria-label="Cerrar">×</button></div>
+  <div class="cuerpo">
+    <div id="lista"></div>
+
+    <span class="lbl" id="entregaLabel">Tipo de entrega</span>
+    <div class="opc" role="radiogroup" aria-labelledby="entregaLabel">
+      <label><input type="radio" name="entrega" value="domicilio" checked><span>Domicilio</span></label>
+      <label><input type="radio" name="entrega" value="recoger"><span>Recoger en el local</span></label>
+    </div>
+
+    <label class="lbl" for="cNombre">Nombre</label>
+    <input class="campo" id="cNombre" name="nombre" autocomplete="name" maxlength="80" required placeholder="Tu nombre">
+    <label class="lbl" for="cTel">Teléfono</label>
+    <input class="campo" id="cTel" name="telefono" type="tel" autocomplete="tel" maxlength="30" required placeholder="300 000 0000">
+    <div id="bloqueDir">
+      <label class="lbl" for="cDir">Dirección de entrega</label>
+      <input class="campo" id="cDir" name="direccion" autocomplete="street-address" maxlength="240" required placeholder="Calle, número, barrio y referencia">
+    </div>
+
+    <span class="lbl" id="pagoLabel">Método de pago</span>
+    <div class="opc" role="radiogroup" aria-labelledby="pagoLabel">
+      <label><input type="radio" name="pago" value="Efectivo" checked><span>Efectivo</span></label>
+      <label><input type="radio" name="pago" value="Transferencia"><span>Transferencia</span></label>
+    </div>
+    <div id="bloqueVuelto">
+      <label class="lbl" for="cVuelto">¿Con cuánto pagas? (opcional)</label>
+      <input class="campo" id="cVuelto" name="efectivo" inputmode="numeric" maxlength="20" placeholder="Ej: 50.000">
+    </div>
+
+    <div style="margin-top:16px">
+      <div class="tot"><span>Subtotal</span><span id="tSub">$0</span></div>
+      <div class="tot" id="filaEnvio"><span>Domicilio</span><span id="tEnv">$0</span></div>
+      <div class="tot g"><span>Total</span><span id="tTot">$0</span></div>
+    </div>
+    <div class="aviso" id="avisoCerrado" style="display:none">Ahora estamos cerrados. Puedes enviar tu solicitud y confirmar por WhatsApp cuándo podemos prepararla.</div>
+    <div class="aviso" id="avisoStorage" role="status" hidden>No se pudo guardar el pedido en este navegador. Puedes continuar, pero podría perderse al cerrar o recargar la página.</div>
+    <div class="aviso" id="estadoEnvio" role="status" hidden>Tu pedido está preparado. Falta enviarlo y confirmarlo en WhatsApp. <a id="continuarWa" target="_blank" rel="noopener">Abrir WhatsApp</a></div>
+    <p class="err" role="alert" id="err"></p>
+  </div>
+  <div class="pie"><button type="submit" class="btn verde grande" id="enviar">Enviar pedido por WhatsApp</button></div>
+</form>
+
+<p class="sr-only" id="anuncio" role="status" aria-live="polite" aria-atomic="true"></p>
+<noscript><p class="aviso">Activa JavaScript para ver el menú y armar tu pedido, o <a href="https://wa.me/573046552807">escríbenos por WhatsApp</a>.</p><style>.bienv{display:none}</style></noscript>
+<script src="order.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
