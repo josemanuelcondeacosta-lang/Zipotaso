@@ -1,6 +1,6 @@
 /* ===== CONFIGURACIÓN: edita aquí los datos de tu restaurante ===== */
 const CONFIG = {
-  whatsapp: "573046552807",          // número con indicativo, sin + ni espacios
+  whatsapp: "57300772681",          // número con indicativo, sin + ni espacios
   instagram: "https://instagram.com/zipotefood",
   direccion: "Cra. 64B #48-54, barrio Modelo, Barranquilla, Atlántico",
   portada: "assets/portada.jpg",       // foto de portada (si no existe, no se muestra)
